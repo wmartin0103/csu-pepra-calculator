@@ -7,302 +7,76 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --color-bg: #ffffff;
-      --color-bg-secondary: #f5f5f3;
-      --color-text-primary: #1a1a18;
-      --color-text-secondary: #5f5e5a;
-      --color-border: rgba(0,0,0,0.12);
-      --color-border-strong: rgba(0,0,0,0.25);
-      --color-accent: #185FA5;
-      --color-accent-bg: #E6F1FB;
-      --color-accent-text: #0C447C;
-      --color-green-1: #1D9E75;
-      --color-green-2: #0F6E56;
-      --color-gray: #888780;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --max-width: 860px;
+      --color-bg: #ffffff; --color-bg-secondary: #f5f5f3;
+      --color-text-primary: #1a1a18; --color-text-secondary: #5f5e5a;
+      --color-border: rgba(0,0,0,0.12); --color-border-strong: rgba(0,0,0,0.25);
+      --color-accent: #185FA5; --color-accent-bg: #E6F1FB; --color-accent-text: #0C447C;
+      --radius-md: 8px; --radius-lg: 12px;
     }
-
     @media (prefers-color-scheme: dark) {
       :root {
-        --color-bg: #1c1c1a;
-        --color-bg-secondary: #272725;
-        --color-text-primary: #f0ede8;
-        --color-text-secondary: #a0a09a;
-        --color-border: rgba(255,255,255,0.1);
-        --color-border-strong: rgba(255,255,255,0.2);
-        --color-accent-bg: #0c2d4a;
-        --color-accent-text: #85b7eb;
+        --color-bg: #1c1c1a; --color-bg-secondary: #272725;
+        --color-text-primary: #f0ede8; --color-text-secondary: #a0a09a;
+        --color-border: rgba(255,255,255,0.1); --color-border-strong: rgba(255,255,255,0.2);
+        --color-accent-bg: #0c2d4a; --color-accent-text: #85b7eb;
       }
     }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      font-size: 15px;
-      line-height: 1.6;
-      color: var(--color-text-primary);
-      background: var(--color-bg);
-      padding: 2rem 1rem 4rem;
-    }
-
-    main {
-      max-width: var(--max-width);
-      margin: 0 auto;
-    }
-
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; font-size: 15px; line-height: 1.6; color: var(--color-text-primary); background: var(--color-bg); padding: 2rem 1rem 4rem; }
+    main { max-width: 860px; margin: 0 auto; }
     header { margin-bottom: 2rem; }
-
-    header h1 {
-      font-size: 22px;
-      font-weight: 500;
-      margin-bottom: 0.25rem;
-    }
-
-    header p {
-      font-size: 14px;
-      color: var(--color-text-secondary);
-    }
-
-    .section-label {
-      font-size: 11px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--color-text-secondary);
-      margin-bottom: 0.75rem;
-    }
-
-    .card {
-      background: var(--color-bg);
-      border: 0.5px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: 1rem 1.25rem;
-    }
-
-    .surface {
-      background: var(--color-bg-secondary);
-      border-radius: var(--radius-lg);
-      padding: 1rem 1.25rem;
-    }
-
-    .divider {
-      border: none;
-      border-top: 0.5px solid var(--color-border);
-      margin: 1.75rem 0;
-    }
-
-    /* Grid layouts */
+    header h1 { font-size: 22px; font-weight: 500; margin-bottom: 0.25rem; }
+    header p { font-size: 14px; color: var(--color-text-secondary); }
+    .section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
+    .surface { background: var(--color-bg-secondary); border-radius: var(--radius-lg); padding: 1rem 1.25rem; }
+    .divider { border: none; border-top: 0.5px solid var(--color-border); margin: 1.75rem 0; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-
-    @media (max-width: 600px) {
-      .grid-2 { grid-template-columns: 1fr; }
-      .grid-4 { grid-template-columns: repeat(2, 1fr); }
-      .grid-3 { grid-template-columns: 1fr 1fr; }
-    }
-
-    /* Controls */
     .control-row { display: flex; flex-direction: column; gap: 4px; }
     .control-label { font-size: 13px; color: var(--color-text-secondary); }
     .control-value { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
-
-    input[type="range"] {
-      width: 100%;
-      height: 4px;
-      appearance: none;
-      background: var(--color-border-strong);
-      border-radius: 2px;
-      outline: none;
-      cursor: pointer;
-    }
-    input[type="range"]::-webkit-slider-thumb {
-      appearance: none;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--color-accent);
-      cursor: pointer;
-    }
-    input[type="range"]::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--color-accent);
-      border: none;
-      cursor: pointer;
-    }
-
-    /* Badges & pills */
-    .badge {
-      display: inline-block;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: var(--radius-md);
-      background: var(--color-accent-bg);
-      color: var(--color-accent-text);
-    }
-
-    .pepra-badge {
-      display: inline-block;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: var(--radius-md);
-      background: var(--color-accent-bg);
-      color: var(--color-accent-text);
-      margin-top: 6px;
-    }
-
-    .timeline-pill {
-      display: inline-block;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: var(--radius-md);
-      background: var(--color-bg-secondary);
-      color: var(--color-text-secondary);
-      margin-bottom: 6px;
-    }
-
-    /* Raise blocks with toggle */
-    .raise-block {
-      border: 0.5px solid var(--color-border);
-      border-radius: var(--radius-md);
-      padding: 0.75rem;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .raise-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 20px;
-    }
-
+    input[type="range"] { width: 100%; height: 4px; appearance: none; background: var(--color-border-strong); border-radius: 2px; outline: none; cursor: pointer; }
+    input[type="range"]::-webkit-slider-thumb { appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--color-accent); cursor: pointer; }
+    input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--color-accent); border: none; cursor: pointer; }
+    .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: var(--radius-md); background: var(--color-accent-bg); color: var(--color-accent-text); }
+    .pepra-badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: var(--radius-md); background: var(--color-accent-bg); color: var(--color-accent-text); margin-top: 6px; }
+    .timeline-pill { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: var(--radius-md); background: var(--color-bg-secondary); color: var(--color-text-secondary); margin-bottom: 6px; }
+    .raise-block { border: 0.5px solid var(--color-border); border-radius: var(--radius-md); padding: 0.75rem; display: flex; flex-direction: column; gap: 10px; }
+    .raise-header { display: flex; align-items: center; justify-content: space-between; min-height: 20px; }
     .raise-title { font-size: 13px; color: var(--color-text-secondary); line-height: 1; }
-
-    .toggle-wrap {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      user-select: none;
-      flex-shrink: 0;
-    }
-
-    .toggle-track {
-      width: 32px;
-      height: 18px;
-      border-radius: 9px;
-      background: var(--color-border-strong);
-      position: relative;
-      flex-shrink: 0;
-      transition: background 0.15s;
-    }
-
+    .toggle-wrap { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; flex-shrink: 0; }
+    .toggle-track { width: 32px; height: 18px; border-radius: 9px; background: var(--color-border-strong); position: relative; flex-shrink: 0; transition: background 0.15s; }
     .toggle-track.on { background: var(--color-accent); }
-
-    .toggle-thumb {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: white;
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      transition: left 0.15s;
-      box-shadow: 0 0 0 0.5px rgba(0,0,0,0.15);
-    }
-
+    .toggle-thumb { width: 14px; height: 14px; border-radius: 50%; background: white; position: absolute; top: 2px; left: 2px; transition: left 0.15s; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.15); }
     .toggle-track.on .toggle-thumb { left: 16px; }
     .toggle-label { font-size: 12px; color: var(--color-text-secondary); line-height: 1; white-space: nowrap; }
-
     .raise-controls { display: flex; gap: 8px; align-items: center; }
     .raise-controls.hidden { display: none; }
     .raise-controls input[type="range"] { flex: 1; }
     .raise-controls .val { font-size: 13px; font-weight: 500; color: var(--color-text-primary); white-space: nowrap; }
     .raise-controls .sep { font-size: 12px; color: var(--color-text-secondary); }
-
-    /* Scenario cards */
-    .scenario-card {
-      background: var(--color-bg);
-      border: 0.5px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: 0.875rem;
-    }
-
+    .scenario-card { background: var(--color-bg); border: 0.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 0.875rem; }
     .scenario-card.highlight { border: 2px solid var(--color-accent); }
     .scenario-card.ineligible { opacity: 0.4; }
-
     .scenario-age { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
     .scenario-sub { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 0.5rem; }
     .scenario-monthly-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 2px; }
     .scenario-monthly { font-size: 18px; font-weight: 500; color: var(--color-accent); }
     .scenario-annual { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
-
-    .scenario-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      margin-top: 5px;
-      padding-top: 5px;
-      border-top: 0.5px solid var(--color-border);
-      color: var(--color-text-secondary);
-    }
-
+    .scenario-row { display: flex; justify-content: space-between; font-size: 11px; margin-top: 5px; padding-top: 5px; border-top: 0.5px solid var(--color-border); color: var(--color-text-secondary); }
     .scenario-row span:last-child { color: var(--color-text-primary); font-weight: 500; }
-
-    /* Breakeven cards */
-    .breakeven-card {
-      background: var(--color-bg-secondary);
-      border-radius: var(--radius-md);
-      padding: 0.75rem 1rem;
-    }
-
+    .breakeven-card { background: var(--color-bg-secondary); border-radius: var(--radius-md); padding: 0.75rem 1rem; }
     .breakeven-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 4px; }
     .breakeven-value { font-size: 16px; font-weight: 500; color: var(--color-text-primary); }
     .breakeven-sub { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
-
-    /* Cola note */
-    .cola-note {
-      font-size: 12px;
-      color: var(--color-text-secondary);
-      background: var(--color-bg-secondary);
-      border-radius: var(--radius-md);
-      padding: 0.75rem 1rem;
-      margin-top: 0.75rem;
-    }
-
-    /* Chart */
+    .cola-note { font-size: 12px; color: var(--color-text-secondary); background: var(--color-bg-secondary); border-radius: var(--radius-md); padding: 0.75rem 1rem; margin-top: 0.75rem; }
     .chart-wrap { position: relative; width: 100%; height: 240px; margin-top: 0.5rem; }
-
-    /* Legend */
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 8px;
-      font-size: 12px;
-      color: var(--color-text-secondary);
-    }
-
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary); }
     .legend-item { display: flex; align-items: center; gap: 5px; }
     .legend-swatch { width: 24px; height: 3px; border-radius: 2px; }
-
-    /* Section spacing */
     section { margin-bottom: 1.75rem; }
-
-    footer {
-      margin-top: 3rem;
-      font-size: 12px;
-      color: var(--color-text-secondary);
-      border-top: 0.5px solid var(--color-border);
-      padding-top: 1rem;
-    }
+    footer { margin-top: 3rem; font-size: 12px; color: var(--color-text-secondary); border-top: 0.5px solid var(--color-border); padding-top: 1rem; }
   </style>
 </head>
 <body>
@@ -312,18 +86,18 @@
       <p>Estimates pension benefit at various retirement ages for PEPRA-tier employees (hired on or after January 1, 2013). Not financial advice.</p>
     </header>
 
-    <section aria-labelledby="profile-label">
-      <div class="section-label" id="profile-label">Employee profile</div>
+    <section>
+      <div class="section-label">Employee profile</div>
       <div class="surface grid-2">
         <div class="control-row">
           <label class="control-label" for="currentAge">Current age</label>
-          <input type="range" id="currentAge" min="25" max="60" step="1" value="39">
-          <div class="control-value" id="currentAge-out">39</div>
+          <input type="range" id="currentAge" min="25" max="60" step="1" value="42">
+          <div class="control-value" id="currentAge-out">42</div>
         </div>
         <div class="control-row">
           <label class="control-label" for="startYear">CalPERS service start year</label>
-          <input type="range" id="startYear" min="2013" max="2024" step="1" value="2017">
-          <div class="control-value" id="startYear-out">2017 <span style="font-weight:400;color:var(--color-text-secondary)">(9 yrs)</span></div>
+          <input type="range" id="startYear" min="2013" max="2024" step="1" value="2018">
+          <div class="control-value" id="startYear-out">2018 <span style="font-weight:400;color:var(--color-text-secondary)">(8 yrs)</span></div>
           <div class="pepra-badge">PEPRA tier · 2% @ 62</div>
         </div>
       </div>
@@ -331,8 +105,8 @@
 
     <hr class="divider">
 
-    <section aria-labelledby="salary-label">
-      <div class="section-label" id="salary-label">Salary assumptions</div>
+    <section>
+      <div class="section-label">Salary assumptions</div>
       <div class="grid-2">
         <div class="control-row">
           <label class="control-label" for="salary">Current salary</label>
@@ -344,38 +118,36 @@
           <input type="range" id="cba" min="0" max="5" step="0.5" value="2">
           <div class="control-value" id="cba-out">2.0%</div>
         </div>
-
         <div class="raise-block">
           <div class="raise-header">
             <span class="raise-title">Expected raise #1</span>
-            <div class="toggle-wrap" id="toggle1-wrap" role="switch" aria-checked="true" tabindex="0" aria-label="Include raise 1">
+            <div class="toggle-wrap" id="toggle1-wrap" role="switch" aria-checked="true" tabindex="0">
               <div class="toggle-track on" id="toggle1-track"><div class="toggle-thumb"></div></div>
               <span class="toggle-label" id="toggle1-label">included</span>
             </div>
           </div>
           <div class="raise-controls" id="raise1-controls">
-            <input type="range" id="raise1pct" min="1" max="25" step="1" value="12" aria-label="Raise 1 percentage">
-            <span class="val" id="raise1pct-out">12%</span>
+            <input type="range" id="raise1pct" min="1" max="25" step="1" value="10">
+            <span class="val" id="raise1pct-out">10%</span>
             <span class="sep">in</span>
-            <input type="range" id="raise1yr" min="1" max="20" step="1" value="1" aria-label="Raise 1 years from now">
-            <span class="val" id="raise1yr-out">1 yr</span>
+            <input type="range" id="raise1yr" min="1" max="20" step="1" value="5">
+            <span class="val" id="raise1yr-out">5 yrs</span>
           </div>
         </div>
-
         <div class="raise-block">
           <div class="raise-header">
             <span class="raise-title">Expected raise #2</span>
-            <div class="toggle-wrap" id="toggle2-wrap" role="switch" aria-checked="true" tabindex="0" aria-label="Include raise 2">
+            <div class="toggle-wrap" id="toggle2-wrap" role="switch" aria-checked="true" tabindex="0">
               <div class="toggle-track on" id="toggle2-track"><div class="toggle-thumb"></div></div>
               <span class="toggle-label" id="toggle2-label">included</span>
             </div>
           </div>
           <div class="raise-controls" id="raise2-controls">
-            <input type="range" id="raise2pct" min="1" max="25" step="1" value="12" aria-label="Raise 2 percentage">
-            <span class="val" id="raise2pct-out">12%</span>
+            <input type="range" id="raise2pct" min="1" max="25" step="1" value="10">
+            <span class="val" id="raise2pct-out">10%</span>
             <span class="sep">in</span>
-            <input type="range" id="raise2yr" min="1" max="25" step="1" value="11" aria-label="Raise 2 years from now">
-            <span class="val" id="raise2yr-out">11 yrs</span>
+            <input type="range" id="raise2yr" min="1" max="25" step="1" value="15">
+            <span class="val" id="raise2yr-out">15 yrs</span>
           </div>
         </div>
       </div>
@@ -383,8 +155,8 @@
 
     <hr class="divider">
 
-    <section aria-labelledby="cola-label">
-      <div class="section-label" id="cola-label">Post-retirement COLA & projection</div>
+    <section>
+      <div class="section-label">Post-retirement COLA & projection</div>
       <div class="grid-2">
         <div class="control-row">
           <label class="control-label" for="cola">Annual COLA (CalPERS max: 2%)</label>
@@ -401,36 +173,36 @@
 
     <hr class="divider">
 
-    <section aria-labelledby="scenarios-label">
-      <div class="section-label" id="scenarios-label">Retirement scenarios</div>
-      <div class="grid-4" id="scenarios" role="list"></div>
-      <div class="cola-note" id="cola-note" aria-live="polite"></div>
+    <section>
+      <div class="section-label">Retirement scenarios</div>
+      <div class="grid-4" id="scenarios"></div>
+      <div class="cola-note" id="cola-note"></div>
     </section>
 
     <hr class="divider">
 
-    <section aria-labelledby="breakeven-label">
-      <div class="section-label" id="breakeven-label">Lifetime breakeven — when does waiting pay off?</div>
+    <section>
+      <div class="section-label">Lifetime breakeven — when does waiting pay off?</div>
       <div class="grid-3" id="breakeven"></div>
     </section>
 
     <hr class="divider">
 
-    <section aria-labelledby="chart-label">
-      <div class="section-label" id="chart-label">Purchasing power over time (today's dollars)</div>
-      <div class="legend" aria-hidden="true">
+    <section>
+      <div class="section-label">Purchasing power over time (today's dollars)</div>
+      <div class="legend">
         <div class="legend-item"><div class="legend-swatch" style="background:#1D9E75"></div>Retire 67</div>
         <div class="legend-item"><div class="legend-swatch" style="background:#0F6E56"></div>Retire 65</div>
         <div class="legend-item"><div class="legend-swatch" style="background:repeating-linear-gradient(90deg,#185FA5 0,#185FA5 6px,transparent 6px,transparent 9px)"></div>Retire 62</div>
         <div class="legend-item"><div class="legend-swatch" style="background:repeating-linear-gradient(90deg,#888780 0,#888780 3px,transparent 3px,transparent 6px)"></div>Retire 60</div>
       </div>
       <div class="chart-wrap">
-        <canvas id="ppChart" role="img" aria-label="Line chart showing estimated real purchasing power of monthly pension benefit for up to four retirement ages over time, adjusted for COLA"></canvas>
+        <canvas id="ppChart" role="img" aria-label="Line chart showing real purchasing power of monthly pension benefit over time"></canvas>
       </div>
     </section>
 
     <footer>
-      <p>Estimates are based on the CalPERS PEPRA formula (2% @ 62, max 2.5% @ 65+) and the 3-year final average salary. This tool is for planning reference only and does not constitute financial or retirement advice. Consult CalPERS or a certified financial planner for official projections.</p>
+      <p>Estimates are based on the CalPERS PEPRA formula (2% @ 62, max 2.5% @ 65+) and the 3-year final average salary. For planning reference only — not financial advice. Consult CalPERS or a certified financial planner for official projections.</p>
     </footer>
   </main>
 
@@ -457,29 +229,28 @@
     setupToggle('toggle2-wrap', 'toggle2-track', 'toggle2-label', 'raise2-controls', raise2Active);
 
     function getAgeFactor(age) {
-      const factors = { 52:1.1, 53:1.16, 54:1.25, 55:1.4, 56:1.52, 57:1.64, 58:1.76, 59:1.88, 60:2.0, 61:2.0, 62:2.0, 63:2.13, 64:2.25, 65:2.5, 66:2.5, 67:2.5 };
-      return factors[Math.round(age)] || (age < 52 ? 1.0 : 2.5);
+      const f = {52:1.1,53:1.16,54:1.25,55:1.4,56:1.52,57:1.64,58:1.76,59:1.88,60:2.0,61:2.0,62:2.0,63:2.13,64:2.25,65:2.5,66:2.5,67:2.5};
+      return f[Math.round(age)] || (age < 52 ? 1.0 : 2.5);
     }
 
-    function estimateFinalSalary(retireAge, currentAge, baseSalary, r1on, raise1pct, raise1yr, r2on, raise2pct, raise2yr, cbaPct) {
-      let sal = baseSalary;
+    function estimateFinalSalary(retireAge, currentAge, base, r1on, r1pct, r1yr, r2on, r2pct, r2yr, cba) {
+      let sal = base;
       for (let y = 1; y <= retireAge - currentAge; y++) {
-        if (r1on && y === raise1yr) sal *= (1 + raise1pct / 100);
-        if (r2on && y === raise2yr) sal *= (1 + raise2pct / 100);
-        sal *= (1 + cbaPct / 100);
+        if (r1on && y === r1yr) sal *= (1 + r1pct / 100);
+        if (r2on && y === r2yr) sal *= (1 + r2pct / 100);
+        sal *= (1 + cba / 100);
       }
       return sal;
     }
 
-    function calcPension(retireAge, currentAge, serviceNow, finalSalary) {
+    function calcPension(retireAge, currentAge, serviceNow, finalSal) {
       const years = serviceNow + (retireAge - currentAge);
-      const factor = getAgeFactor(retireAge);
-      return Math.min((factor / 100) * years * finalSalary, finalSalary);
+      return Math.min((getAgeFactor(retireAge) / 100) * years * finalSal, finalSal);
     }
 
-    function breakeven(annualA, retireAgeA, annualB, retireAgeB) {
-      if (annualB <= annualA) return null;
-      return Math.round(retireAgeB + (annualA * (retireAgeB - retireAgeA)) / (annualB - annualA));
+    function breakeven(aA, rA, aB, rB) {
+      if (aB <= aA) return null;
+      return Math.round(rB + (aA * (rB - rA)) / (aB - aA));
     }
 
     let ppChart = null;
@@ -489,10 +260,10 @@
       const startYear = parseInt(document.getElementById('startYear').value);
       const serviceNow = Math.max(1, CURRENT_YEAR - startYear);
       const salary = parseInt(document.getElementById('salary').value);
-      const raise1pct = parseFloat(document.getElementById('raise1pct').value);
-      const raise1yr = parseInt(document.getElementById('raise1yr').value);
-      const raise2pct = parseFloat(document.getElementById('raise2pct').value);
-      const raise2yr = parseInt(document.getElementById('raise2yr').value);
+      const r1pct = parseFloat(document.getElementById('raise1pct').value);
+      const r1yr = parseInt(document.getElementById('raise1yr').value);
+      const r2pct = parseFloat(document.getElementById('raise2pct').value);
+      const r2yr = parseInt(document.getElementById('raise2yr').value);
       const cba = parseFloat(document.getElementById('cba').value);
       const cola = parseFloat(document.getElementById('cola').value);
       const projAge = parseInt(document.getElementById('projAge').value);
@@ -500,29 +271,29 @@
       document.getElementById('currentAge-out').textContent = currentAge;
       document.getElementById('startYear-out').innerHTML = startYear + ' <span style="font-weight:400;color:var(--color-text-secondary)">(' + serviceNow + ' yr' + (serviceNow !== 1 ? 's' : '') + ')</span>';
       document.getElementById('salary-out').textContent = '$' + salary.toLocaleString();
-      document.getElementById('raise1pct-out').textContent = raise1pct.toFixed(0) + '%';
-      document.getElementById('raise1yr-out').textContent = raise1yr + ' yr' + (raise1yr !== 1 ? 's' : '');
-      document.getElementById('raise2pct-out').textContent = raise2pct.toFixed(0) + '%';
-      document.getElementById('raise2yr-out').textContent = raise2yr + ' yr' + (raise2yr !== 1 ? 's' : '');
+      document.getElementById('raise1pct-out').textContent = r1pct.toFixed(0) + '%';
+      document.getElementById('raise1yr-out').textContent = r1yr + ' yr' + (r1yr !== 1 ? 's' : '');
+      document.getElementById('raise2pct-out').textContent = r2pct.toFixed(0) + '%';
+      document.getElementById('raise2yr-out').textContent = r2yr + ' yr' + (r2yr !== 1 ? 's' : '');
       document.getElementById('cba-out').textContent = cba.toFixed(1) + '%';
       document.getElementById('cola-out').textContent = cola.toFixed(2) + '%';
       document.getElementById('projAge-out').textContent = projAge;
 
       const retireAges = [60, 62, 65, 67];
-      const scenarioData = retireAges.map(age => {
+      const scenarios = retireAges.map(age => {
         if (age <= currentAge) return { age, eligible: false };
-        const finalSal = estimateFinalSalary(age, currentAge, salary, raise1Active.v, raise1pct, raise1yr, raise2Active.v, raise2pct, raise2yr, cba);
+        const finalSal = estimateFinalSalary(age, currentAge, salary, raise1Active.v, r1pct, r1yr, raise2Active.v, r2pct, r2yr, cba);
         const annual = calcPension(age, currentAge, serviceNow, finalSal);
         return { age, finalSal, annual, monthly: annual / 12, yrs: serviceNow + (age - currentAge), factor: getAgeFactor(age), eligible: true };
       });
 
-      document.getElementById('scenarios').innerHTML = scenarioData.map(s => {
-        if (!s.eligible) return `<div class="scenario-card ineligible" role="listitem"><div style="height:21px"></div><div class="scenario-age">Age ${s.age}</div><div class="scenario-sub" style="margin-top:8px;">Already past current age</div></div>`;
-        const yearsAway = s.age - currentAge;
-        const isHighlight = s.age === 65;
-        return `<div class="scenario-card ${isHighlight ? 'highlight' : ''}" role="listitem">
-          ${isHighlight ? '<div class="badge">standard target</div>' : '<div style="height:21px"></div>'}
-          <div class="timeline-pill">${yearsAway} yr${yearsAway !== 1 ? 's' : ''} away</div>
+      document.getElementById('scenarios').innerHTML = scenarios.map(s => {
+        if (!s.eligible) return `<div class="scenario-card ineligible"><div style="height:21px"></div><div class="scenario-age">Age ${s.age}</div><div class="scenario-sub" style="margin-top:8px;">Already past current age</div></div>`;
+        const ya = s.age - currentAge;
+        const hi = s.age === 65;
+        return `<div class="scenario-card ${hi ? 'highlight' : ''}">
+          ${hi ? '<div class="badge">standard target</div>' : '<div style="height:21px"></div>'}
+          <div class="timeline-pill">${ya} yr${ya !== 1 ? 's' : ''} away</div>
           <div class="scenario-age">Age ${s.age}</div>
           <div class="scenario-sub">${s.yrs} yrs service · ${s.factor.toFixed(2)}% factor</div>
           <div class="scenario-monthly-label">monthly benefit</div>
@@ -533,12 +304,12 @@
         </div>`;
       }).join('');
 
-      const eligible = scenarioData.filter(s => s.eligible);
+      const eligible = scenarios.filter(s => s.eligible);
       const ref = eligible.find(s => s.age === 65) || eligible[eligible.length - 1];
       if (ref) {
         const cf = Math.pow(1 + cola / 100, Math.max(0, projAge - ref.age));
-        const realVal = ref.monthly / cf;
-        document.getElementById('cola-note').innerHTML = `<strong>Purchasing power note:</strong> With ${cola.toFixed(2)}% COLA, the age-${ref.age} benefit is worth roughly <strong>$${Math.round(realVal).toLocaleString()}/mo</strong> in today's dollars by age ${projAge} — ${Math.round((realVal / ref.monthly) * 100)}% of its nominal value. CalPERS COLA is capped at 2% regardless of actual inflation.`;
+        const rv = ref.monthly / cf;
+        document.getElementById('cola-note').innerHTML = `<strong>Purchasing power note:</strong> With ${cola.toFixed(2)}% COLA, the age-${ref.age} benefit is worth roughly <strong>$${Math.round(rv).toLocaleString()}/mo</strong> in today's dollars by age ${projAge} — ${Math.round((rv / ref.monthly) * 100)}% of its nominal value. CalPERS COLA is capped at 2% regardless of actual inflation.`;
       }
 
       const bePairs = [];
@@ -554,13 +325,7 @@
         </div>`;
       }).join('');
 
-      const chartColors = [
-        { color: '#1D9E75', dash: [] },
-        { color: '#0F6E56', dash: [] },
-        { color: '#185FA5', dash: [6, 3] },
-        { color: '#888780', dash: [3, 3] },
-      ];
-
+      const colors = [{ c: '#1D9E75', d: [] }, { c: '#0F6E56', d: [] }, { c: '#185FA5', d: [6,3] }, { c: '#888780', d: [3,3] }];
       const startAge = Math.max(currentAge, 55);
       const labels = [];
       for (let a = startAge; a <= projAge; a++) labels.push('Age ' + a);
@@ -570,28 +335,20 @@
         type: 'line',
         data: {
           labels,
-          datasets: scenarioData.map((s, i) => ({
+          datasets: scenarios.map((s, i) => ({
             label: 'Retire ' + s.age,
             data: labels.map((_, li) => {
               const a = startAge + li;
               if (!s.eligible || a < s.age) return null;
               return Math.round(s.monthly / Math.pow(1 + cola / 100, a - s.age));
             }),
-            borderColor: chartColors[i].color,
-            backgroundColor: 'transparent',
-            borderWidth: 2,
-            pointRadius: 0,
-            borderDash: chartColors[i].dash,
-            spanGaps: false,
+            borderColor: colors[i].c, backgroundColor: 'transparent',
+            borderWidth: 2, pointRadius: 0, borderDash: colors[i].d, spanGaps: false,
           }))
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + (ctx.parsed.y || 0).toLocaleString() + '/mo' } }
-          },
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + (ctx.parsed.y || 0).toLocaleString() + '/mo' } } },
           scales: {
             x: { ticks: { autoSkip: true, maxTicksLimit: 8, font: { size: 11 } }, grid: { display: false } },
             y: { ticks: { callback: v => '$' + Math.round(v / 1000) + 'k', font: { size: 11 } }, grid: { color: 'rgba(128,128,128,0.1)' } }
